@@ -34,17 +34,18 @@ final class ApiKeyAuthenticator
             return AuthResult::deny(401, ErrorCode::UNAUTHORIZED, 'Invalid API key.');
         }
 
-        $hash = (string) ($row['key_hash'] ?? '');
-        if ($hash === '' || !hash_equals($hash, hash('sha256', $presented))) {
+        $hash = $row['key_hash'] ?? null;
+        if (!is_string($hash) || $hash === '' || !hash_equals($hash, hash('sha256', $presented))) {
             return AuthResult::deny(401, ErrorCode::UNAUTHORIZED, 'Invalid API key.');
         }
 
-        if ((int) ($row['status'] ?? 0) !== 1) {
+        $status = $row['status'] ?? 0;
+        if (!is_numeric($status) || (int) $status !== 1) {
             return AuthResult::deny(403, ErrorCode::FORBIDDEN, 'API key is disabled.');
         }
 
-        $expiresAt = (int) ($row['expires_at'] ?? 0);
-        if ($expiresAt > 0 && $expiresAt < time()) {
+        $expiresAt = $row['expires_at'] ?? 0;
+        if (is_numeric($expiresAt) && (int) $expiresAt > 0 && (int) $expiresAt < time()) {
             return AuthResult::deny(403, ErrorCode::FORBIDDEN, 'API key has expired.');
         }
 

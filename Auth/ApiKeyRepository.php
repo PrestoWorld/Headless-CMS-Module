@@ -23,7 +23,16 @@ final class ApiKeyRepository implements ApiKeyRepositoryInterface
             ->run()
             ->fetch();
 
-        return is_array($row) ? $row : null;
+        if (!is_array($row)) {
+            return null;
+        }
+
+        $normalized = [];
+        foreach ($row as $key => $value) {
+            $normalized[(string) $key] = $value;
+        }
+
+        return $normalized;
     }
 
     private function table(): string
