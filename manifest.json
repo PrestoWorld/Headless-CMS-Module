@@ -1,0 +1,19 @@
+{
+    "name": "headless-cms",
+    "version": "1.0.0",
+    "description": "Headless API gateway: exposes module data through a uniform, provider-driven REST contract",
+    "type": "support",
+    "priority": 10,
+    "enabled": true,
+    "namespace": "PrestoWorld\\Modules\\HeadlessCMS",
+    "entry": "Module.php",
+    "requires": { "php": "^8.1" },
+    "dependencies": [],
+    "providers": [],
+    "route_prefix": "",
+    "routes": [],
+    "provides": ["headless-cms.gateway"],
+    "autoload": {
+        "psr-4": { "PrestoWorld\\Modules\\HeadlessCMS\\": "." }
+    }
+}
